@@ -1,0 +1,126 @@
+[
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_inconnu.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/inconnu.png"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\mipmap-xxxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_boule_de_neige.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/boule_de_neige.png"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\xml\\data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_pluie_legere.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/pluie_legere.png"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_flocon_de_neige.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/flocon_de_neige.png"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_legere_pluie.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/legere_pluie.png"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_ciel_clair.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/ciel_clair.png"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_pluie_abondante.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/pluie_abondante.png"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_nuageux.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/nuageux.png"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_orage.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/orage.png"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_partiellement_nuageux.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/partiellement_nuageux.png"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_trop_brouillard.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/trop_brouillard.png"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_temps_nuageux.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/temps_nuageux.png"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_averse_de_grele.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/averse_de_grele.png"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\xml\\backup_rules.xml"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_brouillard.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/brouillard.png"
+    },
+    {
+        "merged": "com.example.tpandroid.app-debug-57:/drawable_bruine.png.flat",
+        "source": "com.example.tpandroid.app-main-59:/drawable/bruine.png"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-debug-57:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Etudiant\\.gradle\\daemon\\8.7\\com.example.tpandroid.app-main-59:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    }
+]

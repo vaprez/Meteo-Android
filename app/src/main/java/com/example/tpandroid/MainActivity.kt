@@ -44,12 +44,11 @@ class MainActivity : ComponentActivity() {
                 // Remember the NavController
                 val navController = rememberNavController()
                 val selectedCityName = remember { mutableStateOf("") }
+                val selectedCity = remember { mutableStateOf<CityResult?>(null) }
 
                 // Define the NavHost with routes
                 NavHost(navController = navController, startDestination = "homePage") {
                     composable("homePage") {
-                        // État pour stocker la ville sélectionnée
-                        val selectedCity = remember { mutableStateOf<CityResult?>(null) }
                         // Appeler HomePage et passer le ViewModel
                         HomePage(
                             onCitySelected = { city ->
@@ -75,7 +74,7 @@ class MainActivity : ComponentActivity() {
                     }
                     // Define WeatherDetailPage route
                     composable("Acceuil") {
-                        Acceuil(viewModel = weatherViewModel,navController=navController,cityName = selectedCityName.value)
+                        selectedCity.value?.let { it1 -> Acceuil(viewModel = weatherViewModel,navController=navController,cityName = selectedCityName.value, city = it1) }
                     }
                 }
 

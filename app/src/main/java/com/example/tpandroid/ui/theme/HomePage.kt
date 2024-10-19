@@ -8,14 +8,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -37,7 +41,10 @@ fun HomePage(
     var selectedCity by remember { mutableStateOf<CityResult?>(null) } // Variable d'état pour la ville sélectionnée
     val weatherState by viewModel.weatherState.observeAsState() // Obtenir l'état météo
     val citySuggestions by viewModel.citySuggestions.collectAsState() // Obtenir les suggestions de villes
-
+    val favoriteCities by viewModel.favoriteCities.collectAsState()
+    var showErrorDialog by remember { mutableStateOf(false) } // État pour afficher la boîte de dialogue
+    var errorMessage by remember { mutableStateOf("") } // Message d'erreur à afficher
+    var titleMessage by remember { mutableStateOf("") } // titre du Message d'erreur à afficher
     val context = LocalContext.current
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
 
@@ -54,10 +61,35 @@ fun HomePage(
                 }
             } else {
                 // Gérer le cas où la permission n'est pas accordée
+                titleMessage = "Erreur"
+                errorMessage = "Permission refusée"
+                showErrorDialog = true
                 println("Permission refusée")
             }
         }
     )
+
+    // Afficher la boîte de dialogue d'erreur si nécessaire
+    if (showErrorDialog) {
+        AlertDialog(
+            onDismissRequest = { showErrorDialog = false },
+            title = { Text(titleMessage,fontSize = 20.sp) },
+            text = { Text(errorMessage, fontSize = 18.sp) },
+            confirmButton = {
+                TextButton(onClick = { showErrorDialog = false }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
+    // Ajoutez une fonction pour réinitialiser l'état
+    fun resetState() {
+        city = TextFieldValue("")
+        selectedCity = null
+        showSuggestions = false
+        // Si nécessaire, réinitialisez d'autres états ici
+    }
 
     Scaffold(
         topBar = {
@@ -122,9 +154,15 @@ fun HomePage(
                             weatherState?.let { weather ->
                                 navController.navigate("Acceuil")
                             } ?: run {
+                                titleMessage = "Message"
+                                errorMessage = "Météo non disponible, veuillez attendre."
+                                showErrorDialog = true
                                 println("Météo non disponible, veuillez attendre.")
                             }
                         } else {
+                            titleMessage = "Message"
+                            errorMessage = "Aucune ville sélectionnée."
+                            showErrorDialog = true
                             println("Aucune ville sélectionnée")
                         }
                     },
@@ -133,7 +171,7 @@ fun HomePage(
                     Text("Valider la Ville")
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 // Card pour la recherche par géolocalisation
                 Card(
@@ -146,7 +184,9 @@ fun HomePage(
                             .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text("Ou recherchez par géolocalisation")
+                        Text("Recherchez par géolocalisation",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Light,)
 
                         Spacer(modifier = Modifier.height(8.dp))
 
@@ -177,10 +217,78 @@ fun HomePage(
                         ) {
                             Text("Utiliser ma position actuelle")
                         }
+
+                        Spacer(modifier = Modifier.height(20.dp))
                     }
                 }
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Card pour les villes favorites
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = 4.dp
+                ){
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        // Titre de la section
+                        Text("Villes Favorites", style = MaterialTheme.typography.h6)
+
+                        // Liste des villes favorites
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(300.dp)
+                                .weight(1f)
+                        ) {
+                            items(favoriteCities) { favoriteCity ->
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(8.dp),
+                                    elevation = 4.dp
+                                ) {
+                                    // Bouton pour retirer des favoris
+                                    IconButton(onClick = {
+                                        if(favoriteCity!==null){
+                                            onCityValidated()
+                                            weatherState?.let { weather ->
+                                                navController.navigate("Acceuil")
+                                            } ?: run {
+                                                println("Météo non disponible, veuillez attendre.")
+                                            }
+                                        }
+                                        else{
+                                            println("Erreur de chargement de la ville favorite")
+                                        }
+                                    }){
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(16.dp),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            // Nom de la ville favorite
+                                            Text(text = favoriteCity.name)
+
+
+                                            Icon(
+                                                imageVector = Icons.Default.Favorite, // Icône de favori plein pour indiquer que c'est dans les favoris
+                                                contentDescription = "Remove from favorites",
+                                                tint = MaterialTheme.colors.primary
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     )

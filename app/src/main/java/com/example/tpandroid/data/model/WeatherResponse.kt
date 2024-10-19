@@ -14,4 +14,9 @@ data class HourlyData(
 
 )
 
+data class WeatherInfo(
+    val description: String,
+    val imageRes: Int
+)
+
 

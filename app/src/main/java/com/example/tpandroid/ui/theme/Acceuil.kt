@@ -1,21 +1,26 @@
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.ArrowBack // Importer l'icône de retour
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.tpandroid.data.model.WeatherResponse
+import com.example.tpandroid.data.network.CityResult
 import com.example.tpandroid.ui.viewmodel.WeatherViewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
@@ -28,10 +33,17 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
 @Composable
-fun Acceuil(viewModel: WeatherViewModel, navController: NavController,cityName:String) {
+fun Acceuil(
+    viewModel: WeatherViewModel,
+    navController: NavController,
+    cityName:String,
+    city: CityResult,) {
     // Use collectAsState to observe the StateFlow from ViewModel
     val weatherResponse by viewModel.weatherState.observeAsState()
-
+    var isFavorite by remember { mutableStateOf(viewModel.favoriteCities.value.contains(city)) }
+    var showErrorDialog by remember { mutableStateOf(false) } // État pour afficher la boîte de dialogue
+    var errorMessage by remember { mutableStateOf("") } // Message d'erreur à afficher
+    var titleMessage by remember { mutableStateOf("") } // titre du Message d'erreur à afficher
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -69,13 +81,11 @@ fun Acceuil(viewModel: WeatherViewModel, navController: NavController,cityName:S
 
                     // Get current hour
                     val currentHour = LocalDateTime.now().hour
-
                     // Limit to the next 20 hours from the current hour
                     val next20Hours = weather.hourly.temperature_2m.drop(currentHour).take(20)
                     val windSpeedsNext20Hours = weather.hourly.wind_speed_10m.drop(currentHour).take(20)
                     val timeNext20Hours = weather.hourly.time.drop(currentHour).take(20)
                     val weatherCodesNext20Hours = weather.hourly.weather_code.drop(currentHour).take(20)
-
                     val zoneParis = ZoneId.of("Europe/Paris")
                     val formatter = DateTimeFormatter.ofPattern("HH:mm")
                     val currentTemperature = next20Hours[0]
@@ -83,7 +93,31 @@ fun Acceuil(viewModel: WeatherViewModel, navController: NavController,cityName:S
                     val (minTemperature, maxTemperature) = getTemperatureForToday(weather)
                     val currentweatherDescription = viewModel.getWeatherDescription(weatherCodesNext20Hours[0])
 
+                    val formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
+
+                    // Afficher la boîte de dialogue d'erreur si nécessaire
+                    if (showErrorDialog) {
+                        androidx.compose.material.AlertDialog(
+                            onDismissRequest = { showErrorDialog = false },
+                            title = { androidx.compose.material.Text(titleMessage,fontSize = 20.sp) },
+                            text = { androidx.compose.material.Text(errorMessage,fontSize = 18.sp) },
+                            confirmButton = {
+                                androidx.compose.material.TextButton(onClick = {
+                                    showErrorDialog = false
+                                }) {
+                                    androidx.compose.material.Text("OK")
+                                }
+                            }
+                        )
+                    }
+
+                    Text(
+                        text = "Méteo du ${LocalDate.now().format(formatDate)}",
+                        textAlign = TextAlign.Center,
+                        fontSize = 27.sp,
+                        fontWeight = FontWeight.Light
+                    )
 
                     // Main card with current time, temperature, and wind speed
                     Card(
@@ -106,7 +140,8 @@ fun Acceuil(viewModel: WeatherViewModel, navController: NavController,cityName:S
                                     text = "$currentTime",
                                     fontSize = 25.sp,
                                     fontWeight = FontWeight.Light,
-                                    textAlign = TextAlign.Center
+                                    textAlign = TextAlign.Left,
+                                    modifier = Modifier.align(Alignment.Start)
                                 )
 
                                 Text(
@@ -116,9 +151,15 @@ fun Acceuil(viewModel: WeatherViewModel, navController: NavController,cityName:S
                                     textAlign = TextAlign.Center
                                 )
 
+                                Image(
+                                    painter = painterResource(id = currentweatherDescription.imageRes),
+                                    contentDescription = currentweatherDescription.description,
+                                    modifier = Modifier.size(64.dp)
+                                )
+
                                 // Display weather condition
                                 Text(
-                                    text = currentweatherDescription,
+                                    text = currentweatherDescription.description,
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Light,
                                     textAlign = TextAlign.Start
@@ -142,11 +183,25 @@ fun Acceuil(viewModel: WeatherViewModel, navController: NavController,cityName:S
 
                             // Favorite button in the top-right corner
                             IconButton(onClick = {
-                                println("Ville ajoutée aux favoris !")
+                                if (isFavorite) {
+                                    viewModel.removeFavorite(city)
+                                    isFavorite = false
+                                    titleMessage = "Message"
+                                    errorMessage = "Ville retirée des favoris !"
+                                    showErrorDialog = true
+                                    println("Ville retirée des favoris !")
+                                } else {
+                                    viewModel.addFavorite(city)
+                                    isFavorite = true
+                                    titleMessage = "Message"
+                                    errorMessage = "Ville ajoutée aux favoris !"
+                                    showErrorDialog = true
+                                    println("Ville ajoutée aux favoris !")
+                                }
                             }) {
                                 Icon(
-                                    imageVector = Icons.Default.FavoriteBorder,
-                                    contentDescription = "Add to Favorites",
+                                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                                    contentDescription = if (isFavorite) "Remove from Favorites" else "Add to Favorites",
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                             }
@@ -174,7 +229,8 @@ fun Acceuil(viewModel: WeatherViewModel, navController: NavController,cityName:S
                                 .fillMaxWidth()
                                 .padding(16.dp),
                             shape = MaterialTheme.shapes.medium,
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+
                         ) {
                             Column(
                                 modifier = Modifier
@@ -199,18 +255,17 @@ fun Acceuil(viewModel: WeatherViewModel, navController: NavController,cityName:S
                                     text = displayTime,
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Light,
-                                    textAlign = TextAlign.Start
+                                    textAlign = TextAlign.Left,
+                                    modifier = Modifier.align(Alignment.Start) // Placer l'heure dans le coin gauche
                                 )
 
                                 // Get weather description based on weather code
                                 val weatherDescription = viewModel.getWeatherDescription(weatherCodesNext20Hours[page])
 
-                                // Display weather condition
-                                Text(
-                                    text = weatherDescription,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Light,
-                                    textAlign = TextAlign.Start
+                                Image(
+                                    painter = painterResource(id = weatherDescription.imageRes),
+                                    contentDescription = weatherDescription.description,
+                                    modifier = Modifier.size(64.dp)
                                 )
 
                                 // Display temperature for each hour
@@ -242,11 +297,15 @@ fun Acceuil(viewModel: WeatherViewModel, navController: NavController,cityName:S
                     )
                 } else {
                     // Handle empty data case
-                    Text(text = "Weather data is not available.", fontSize = 24.sp)
+                    titleMessage = "Erreur"
+                    errorMessage = "Weather data is not available."
+                    showErrorDialog = true
                 }
             } ?: run {
-                // Display loading state if data is not yet available
-                Text(text = "Loading...", fontSize = 24.sp)
+                // En cours de chargement
+                titleMessage = "Message"
+                errorMessage = "Loading..."
+                showErrorDialog = true
             }
         }
     }

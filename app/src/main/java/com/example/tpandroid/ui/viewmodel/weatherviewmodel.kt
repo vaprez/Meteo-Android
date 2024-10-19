@@ -1,8 +1,10 @@
 package com.example.tpandroid.ui.viewmodel
 
 import androidx.lifecycle.*
+import com.example.tpandroid.R
 import com.example.tpandroid.data.WeatherRepository
 import com.example.tpandroid.data.model.HourlyData
+import com.example.tpandroid.data.model.WeatherInfo
 import com.example.tpandroid.data.model.WeatherResponse
 import com.example.tpandroid.data.network.CityResult
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +20,11 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
     // État pour stocker les suggestions de villes
     private val _citySuggestions = MutableStateFlow<List<CityResult>>(emptyList())
     val citySuggestions: StateFlow<List<CityResult>> get() = _citySuggestions
+
+
+    // Liste réactive des villes favorites
+    private val _favoriteCities = MutableStateFlow<List<CityResult>>(emptyList())
+    val favoriteCities: StateFlow<List<CityResult>> = _favoriteCities
 
 
     // Fonction pour rechercher les suggestions de villes
@@ -52,27 +59,39 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
         }
     }
 
-    fun getWeatherDescription(code: Int?): String {
+    fun getWeatherDescription(code: Int?): WeatherInfo {
         return when (code) {
-            0 -> "Ciel dégagé"
-            1 -> "Partiellement nuageux"
-            2 -> "Nuageux"
-            3 -> "Très nuageux"
-            45 -> "Brouillard léger"
-            48 -> "Brouillard givrant"
-            51 -> "Bruine légère"
-            53 -> "Bruine modérée"
-            55 -> "Bruine dense"
-            61 -> "Pluie légère"
-            63 -> "Pluie modérée"
-            65 -> "Pluie forte"
-            71 -> "Neige légère"
-            73 -> "Neige modérée"
-            75 -> "Neige forte"
-            95 -> "Orage léger"
-            96 -> "Orage avec grêle"
-            else -> "Condition météo inconnue"
+            0 -> WeatherInfo("Ciel dégagé", R.drawable.ciel_clair) // Image for clear sky
+            1 -> WeatherInfo("Partiellement nuageux", R.drawable.partiellement_nuageux)
+            2 -> WeatherInfo("Nuageux", R.drawable.nuageux)
+            3 -> WeatherInfo("Très nuageux", R.drawable.nuageux)
+            45 -> WeatherInfo("Brouillard léger", R.drawable.brouillard)
+            48 -> WeatherInfo("Brouillard givrant", R.drawable.trop_brouillard)
+            51 -> WeatherInfo("Bruine légère", R.drawable.bruine)
+            53 -> WeatherInfo("Bruine modérée", R.drawable.bruine)
+            55 -> WeatherInfo("Bruine dense", R.drawable.bruine)
+            61 -> WeatherInfo("Pluie légère", R.drawable.pluie_legere)
+            63 -> WeatherInfo("Pluie modérée", R.drawable.pluie_abondante)
+            65 -> WeatherInfo("Pluie forte", R.drawable.pluie_abondante)
+            71 -> WeatherInfo("Neige légère", R.drawable.flocon_de_neige)
+            73 -> WeatherInfo("Neige modérée", R.drawable.flocon_de_neige)
+            75 -> WeatherInfo("Neige forte", R.drawable.boule_de_neige)
+            95 -> WeatherInfo("Orage léger", R.drawable.orage)
+            96 -> WeatherInfo("Orage avec grêle", R.drawable.averse_de_grele)
+            else -> WeatherInfo("Condition météo inconnue", R.drawable.inconnu)
         }
     }
+
+
+    // Ajouter une ville aux favoris
+    fun addFavorite(city: CityResult) {
+        _favoriteCities.value = _favoriteCities.value + city
+    }
+
+    // Supprimer une ville des favoris
+    fun removeFavorite(city: CityResult) {
+        _favoriteCities.value = _favoriteCities.value.filter { it != city }
+    }
+
 
 }
