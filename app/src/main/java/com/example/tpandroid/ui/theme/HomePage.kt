@@ -2,6 +2,8 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Looper
+import android.transition.CircularPropagation
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -26,6 +28,9 @@ import androidx.navigation.NavController
 import com.example.tpandroid.data.network.CityResult
 import com.example.tpandroid.ui.viewmodel.WeatherViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 
 @Composable
@@ -36,6 +41,8 @@ fun HomePage(
     viewModel: WeatherViewModel, // Passer le ViewModel comme paramètre
     navController: NavController
 ) {
+    var position: Location? = null;
+    val isLoading = remember { mutableStateOf(false) } // État pour indiquer le chargement
     var city by remember { mutableStateOf(TextFieldValue("")) }
     var showSuggestions by remember { mutableStateOf(false) } // État pour afficher/masquer les suggestions
     var selectedCity by remember { mutableStateOf<CityResult?>(null) } // Variable d'état pour la ville sélectionnée
@@ -151,14 +158,7 @@ fun HomePage(
                     onClick = {
                         if (selectedCity != null) {
                             onCityValidated()
-                            weatherState?.let { weather ->
-                                navController.navigate("Acceuil")
-                            } ?: run {
-                                titleMessage = "Message"
-                                errorMessage = "Météo non disponible, veuillez attendre."
-                                showErrorDialog = true
-                                println("Météo non disponible, veuillez attendre.")
-                            }
+                            navController.navigate("Acceuil")
                         } else {
                             titleMessage = "Message"
                             errorMessage = "Aucune ville sélectionnée."
@@ -200,10 +200,10 @@ fun HomePage(
                                     ) == PackageManager.PERMISSION_GRANTED -> {
                                         // Si la permission est déjà accordée, obtenir la localisation
                                         getCurrentLocation(context,fusedLocationClient) { location ->
-                                            location?.let {
-                                                viewModel.fetchWeatherByCoordinates(it.latitude, it.longitude)
+                                            if (location != null) {
+                                                viewModel.fetchWeatherByCoordinates(location.latitude, location.longitude)
                                                 onLocationSearch(location)
-                                                navController.navigate("Acceuil")
+                                                navController.navigate("Localisation")
                                             }
                                         }
                                     }
@@ -252,15 +252,11 @@ fun HomePage(
                                         .padding(8.dp),
                                     elevation = 4.dp
                                 ) {
-                                    // Bouton pour retirer des favoris
+                                    // Bouton pour naviguer sur les favoris
                                     IconButton(onClick = {
                                         if(favoriteCity!==null){
                                             onCityValidated()
-                                            weatherState?.let { weather ->
-                                                navController.navigate("Acceuil")
-                                            } ?: run {
-                                                println("Météo non disponible, veuillez attendre.")
-                                            }
+                                            navController.navigate("Acceuil")
                                         }
                                         else{
                                             println("Erreur de chargement de la ville favorite")
@@ -275,7 +271,6 @@ fun HomePage(
                                         ) {
                                             // Nom de la ville favorite
                                             Text(text = favoriteCity.name)
-
 
                                             Icon(
                                                 imageVector = Icons.Default.Favorite, // Icône de favori plein pour indiquer que c'est dans les favoris
@@ -292,6 +287,23 @@ fun HomePage(
             }
         }
     )
+
+    // Utiliser LaunchedEffect pour naviguer une fois que les données météo sont prêtes
+    LaunchedEffect(weatherState) {
+        if (weatherState != null) {
+            // Terminer le chargement
+            isLoading.value = false
+            println("affichage")
+
+        } else if (isLoading.value && weatherState == null) {
+            // Gérer les erreurs ou l'absence de données météo
+            println("ok: Erreur ${weatherState}")
+            isLoading.value = false
+            titleMessage = "Erreur"
+            errorMessage = "Données météo indisponibles. Veuillez réessayer."
+            showErrorDialog = true
+        }
+    }
 }
 
 // Fonction pour obtenir la localisation actuelle
@@ -300,21 +312,27 @@ fun getCurrentLocation(
     fusedLocationClient: FusedLocationProviderClient,
     onLocationResult: (Location?) -> Unit
 ) {
-    // Vérifier si la permission est accordée
     if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
         == PackageManager.PERMISSION_GRANTED) {
 
-        // Si la permission est accordée, récupérer la localisation
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
-                onLocationResult(location)
-            }
-            .addOnFailureListener {
-                println("Impossible d'obtenir la localisation")
-                onLocationResult(null)
-            }
+        val locationRequest = LocationRequest.create().apply {
+            interval = 10000 // 10 secondes
+            fastestInterval = 5000 // 5 secondes
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+                    val location = locationResult.lastLocation
+                    onLocationResult(location)
+                    fusedLocationClient.removeLocationUpdates(this) // Arrêter la mise à jour après avoir reçu une localisation
+                }
+            },
+            Looper.getMainLooper()
+        )
     } else {
-        // Si la permission n'est pas accordée, gérer l'erreur (ou demander la permission)
         println("Permission de localisation non accordée")
         onLocationResult(null)
     }

@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.tpandroid.app-mergeDebugResources-55:/values-v21/values-v21.xml",
+            "outputFile": "com.example.tpandroid.app-mergeDebugResources-58:/values-v21/values-v21.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\7de6e129fc532fb14e7cab0003f61d4d\\transformed\\core-1.13.1\\res\\values-v21\\values-v21.xml",
+                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\c1521b962507548301a48631fa6fd6d1\\transformed\\core-1.13.1\\res\\values-v21\\values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",

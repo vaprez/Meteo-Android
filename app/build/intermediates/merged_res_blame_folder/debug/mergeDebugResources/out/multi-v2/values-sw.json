@@ -1,27 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.tpandroid.app-mergeDebugResources-55:/values-sw/values-sw.xml",
+            "outputFile": "com.example.tpandroid.app-mergeDebugResources-58:/values-sw/values-sw.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\ea9d3aa31d4aa6636f3887a611756734\\transformed\\foundation-release\\res\\values-sw\\values-sw.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,156",
-                        "endColumns": "100,102",
-                        "endOffsets": "151,254"
-                    },
-                    "to": {
-                        "startLines": "102,103",
-                        "startColumns": "4,4",
-                        "startOffsets": "10896,10997",
-                        "endColumns": "100,102",
-                        "endOffsets": "10992,11095"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\dd3cb869c89ebe55e318ca1247ea4690\\transformed\\ui-release\\res\\values-sw\\values-sw.xml",
+                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\d75dfe6f6cb1f8d0886cd67c5b3dc4c5\\transformed\\ui-release\\res\\values-sw\\values-sw.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -38,24 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\16fd028b618490a00adf1527412bf129\\transformed\\play-services-basement-18.4.0\\res\\values-sw\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "195",
-                        "endColumns": "141",
-                        "endOffsets": "336"
-                    },
-                    "to": {
-                        "startLines": "19",
-                        "startColumns": "4",
-                        "startOffsets": "2018",
-                        "endColumns": "145",
-                        "endOffsets": "2159"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\5e73bb0e22974794b7315ea51b36b55b\\transformed\\play-services-base-18.5.0\\res\\values-sw\\values.xml",
+                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\a956b3262046cddfd1bd5d918824406e\\transformed\\play-services-base-18.5.0\\res\\values-sw\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -72,7 +38,41 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\7de6e129fc532fb14e7cab0003f61d4d\\transformed\\core-1.13.1\\res\\values-sw\\values-sw.xml",
+                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\f0a5d3fabcd9d913bcca1d62c28af675\\transformed\\play-services-basement-18.4.0\\res\\values-sw\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "141",
+                        "endOffsets": "336"
+                    },
+                    "to": {
+                        "startLines": "19",
+                        "startColumns": "4",
+                        "startOffsets": "2018",
+                        "endColumns": "145",
+                        "endOffsets": "2159"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\db6afbf7b2d3c6a4cf4534b0db288384\\transformed\\foundation-release\\res\\values-sw\\values-sw.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,156",
+                        "endColumns": "100,102",
+                        "endOffsets": "151,254"
+                    },
+                    "to": {
+                        "startLines": "102,103",
+                        "startColumns": "4,4",
+                        "startOffsets": "10896,10997",
+                        "endColumns": "100,102",
+                        "endOffsets": "10992,11095"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\c1521b962507548301a48631fa6fd6d1\\transformed\\core-1.13.1\\res\\values-sw\\values-sw.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -89,7 +89,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\23f51f72020b4723b493a3c18a879165\\transformed\\material3-release\\res\\values-sw\\values-sw.xml",
+                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\898c085507aa05ea01ce12410bdbae7e\\transformed\\material3-release\\res\\values-sw\\values-sw.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

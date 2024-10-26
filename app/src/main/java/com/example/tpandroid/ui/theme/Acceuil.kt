@@ -37,7 +37,9 @@ fun Acceuil(
     viewModel: WeatherViewModel,
     navController: NavController,
     cityName:String,
-    city: CityResult,) {
+    city: CityResult) {
+    println("affichage: page")
+    val isLoading = remember { mutableStateOf(true) } // État pour indiquer le chargement
     // Use collectAsState to observe the StateFlow from ViewModel
     val weatherResponse by viewModel.weatherState.observeAsState()
     var isFavorite by remember { mutableStateOf(viewModel.favoriteCities.value.contains(city)) }
@@ -47,13 +49,18 @@ fun Acceuil(
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
 
+
+
+
     Scaffold(
         topBar = {
             // TopAppBar avec un bouton de retour
             TopAppBar(
                 title = { Text(text = "Météo") },
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigateUp() }) {
+                    IconButton(onClick = {
+                        viewModel.resetWeather() // Réinitialiser weatherResponse ici
+                        navController.navigateUp() }) {
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Retour")
                     }
                 }
@@ -303,9 +310,12 @@ fun Acceuil(
                 }
             } ?: run {
                 // En cours de chargement
-                titleMessage = "Message"
-                errorMessage = "Loading..."
-                showErrorDialog = true
+                CircularProgressIndicator(
+                    modifier = Modifier.size(50.dp) // Taille de la barre de progression
+                )
+                Spacer(modifier = Modifier.height(16.dp)) // Espacement entre la barre de progression et le texte
+                Text("Chargement des données météo...", fontSize = 18.sp) // Texte d'indication
+                println("ok:${weatherResponse}")
             }
         }
     }

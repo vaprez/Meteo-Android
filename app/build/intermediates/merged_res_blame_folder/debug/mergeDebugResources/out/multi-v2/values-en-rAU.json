@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.tpandroid.app-mergeDebugResources-55:/values-en-rAU/values-en-rAU.xml",
+            "outputFile": "com.example.tpandroid.app-mergeDebugResources-58:/values-en-rAU/values-en-rAU.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\ea9d3aa31d4aa6636f3887a611756734\\transformed\\foundation-release\\res\\values-en-rAU\\values-en-rAU.xml",
+                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\db6afbf7b2d3c6a4cf4534b0db288384\\transformed\\foundation-release\\res\\values-en-rAU\\values-en-rAU.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\7de6e129fc532fb14e7cab0003f61d4d\\transformed\\core-1.13.1\\res\\values-en-rAU\\values-en-rAU.xml",
+                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\c1521b962507548301a48631fa6fd6d1\\transformed\\core-1.13.1\\res\\values-en-rAU\\values-en-rAU.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -38,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\23f51f72020b4723b493a3c18a879165\\transformed\\material3-release\\res\\values-en-rAU\\values-en-rAU.xml",
+                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\898c085507aa05ea01ce12410bdbae7e\\transformed\\material3-release\\res\\values-en-rAU\\values-en-rAU.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -55,7 +55,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\dd3cb869c89ebe55e318ca1247ea4690\\transformed\\ui-release\\res\\values-en-rAU\\values-en-rAU.xml",
+                    "source": "C:\\Users\\Etudiant\\.gradle\\caches\\transforms-4\\d75dfe6f6cb1f8d0886cd67c5b3dc4c5\\transformed\\ui-release\\res\\values-en-rAU\\values-en-rAU.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

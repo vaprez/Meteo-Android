@@ -40,6 +40,11 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
         }
     }
 
+    // Méthode pour réinitialiser la météo
+    fun resetWeather() {
+        _weatherState.value = null // Réinitialise l'état de la réponse météo
+    }
+
     // Fonction pour rechercher la météo via latitude et longitude
     fun fetchWeatherByCoordinates(lat: Double, lon: Double) {
         viewModelScope.launch {
@@ -47,7 +52,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
                 val weather = repository.getWeatherForecast(lat, lon)
                 if (weather != null) {
                     _weatherState.value = weather
-                    println("Weather data received: $weather")
+                    println("Weather data received m: $weather")
                 } else {
                     println("No weather data available.")
                 }

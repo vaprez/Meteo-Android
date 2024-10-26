@@ -14,10 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+//import com.example.tpandroid.data.AppDatabase
 import com.example.tpandroid.data.WeatherRepository
 import com.example.tpandroid.data.network.ApiClient
 import com.example.tpandroid.data.network.CityResult
 import com.example.tpandroid.data.network.WeatherApiService
+import com.example.tpandroid.ui.theme.Localisation
 import com.example.tpandroid.ui.theme.TpAndroidTheme
 import com.example.tpandroid.ui.viewmodel.WeatherViewModel
 import com.example.tpandroid.ui.viewmodel.WeatherViewModelFactory
@@ -32,6 +34,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val apiService = ApiClient.weatherApiService
+//        val database = AppDatabase.getDatabase(this)
         val repository = WeatherRepository(apiService)
         val viewModelFactory = WeatherViewModelFactory(repository)
         val weatherViewModel: WeatherViewModel by viewModels { viewModelFactory }
@@ -76,6 +79,12 @@ class MainActivity : ComponentActivity() {
                     composable("Acceuil") {
                         selectedCity.value?.let { it1 -> Acceuil(viewModel = weatherViewModel,navController=navController,cityName = selectedCityName.value, city = it1) }
                     }
+
+                    composable("Localisation"){
+                        Localisation(viewModel = weatherViewModel,navController = navController)
+                    }
+
+
                 }
 
             }
