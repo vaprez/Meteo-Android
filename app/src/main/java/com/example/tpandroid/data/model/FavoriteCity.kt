@@ -34,6 +34,7 @@ data class FavoriteCity(
     fun toCityResults(): CityResult {
         return Gson().fromJson(this.cityData, CityResult::class.java) // Conversion du JSON en CityResult
     }
+
 }
 
 

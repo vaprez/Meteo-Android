@@ -49,12 +49,17 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
     fun fetchWeatherByCoordinates(lat: Double, lon: Double) {
         viewModelScope.launch {
             try {
-                val weather = repository.getWeatherForecast(lat, lon)
-                if (weather != null) {
-                    _weatherState.value = weather
-                    println("Weather data received m: $weather")
+                // Étape 1 : Vérifier dans le cache (base de données) avant de faire un appel réseau
+                val cachedWeather = repository.getCachedWeather(lat, lon)
+                if (cachedWeather != null) {
+                    _weatherState.value = cachedWeather
+                    println("Weather data loaded from cache: $cachedWeather")
                 } else {
-                    println("No weather data available.")
+                    // Étape 2 : Si le cache est vide, faire un appel réseau pour obtenir les données
+                    val weather = repository.getWeatherForecast(lat, lon)
+                    _weatherState.value = weather
+                    println("Weather data received from API: $weather")
+
                 }
             }catch (e: Exception){
                 println("Error fetching weather data: ${e.message}")

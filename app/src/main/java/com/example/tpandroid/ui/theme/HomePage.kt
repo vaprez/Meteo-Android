@@ -255,7 +255,8 @@ fun HomePage(
                                     // Bouton pour naviguer sur les favoris
                                     IconButton(onClick = {
                                         if(favoriteCity!==null){
-                                            onCityValidated()
+                                            onCitySelected(favoriteCity)
+                                            viewModel.fetchWeatherByCoordinates(favoriteCity.latitude,favoriteCity.longitude)
                                             navController.navigate("Acceuil")
                                         }
                                         else{

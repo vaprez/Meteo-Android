@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp") version "1.9.20-1.0.14" apply false
-    id ("kotlin-android")
     id ("kotlin-kapt")
 }
 
@@ -55,11 +54,10 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.room.common)
-    implementation(libs.androidx.room.runtime.android)
-    annotationProcessor(libs.androidx.room.runtime)
-//    implementation(libs.androidx.room.compiler)
-    annotationProcessor(libs.androidx.room.ktx)
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    kapt(libs.androidx.room.ktx)
     implementation (libs.gson)
 
     implementation(libs.androidx.core.ktx)

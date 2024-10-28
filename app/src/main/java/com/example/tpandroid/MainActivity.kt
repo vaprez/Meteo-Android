@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.tpandroid.data.AppDatabase
 //import com.example.tpandroid.data.AppDatabase
 import com.example.tpandroid.data.WeatherRepository
 import com.example.tpandroid.data.network.ApiClient
@@ -34,8 +35,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val apiService = ApiClient.weatherApiService
-//        val database = AppDatabase.getDatabase(this)
-        val repository = WeatherRepository(apiService)
+        val database = AppDatabase.getDatabase(this)
+        val repository = WeatherRepository(apiService,database)
         val viewModelFactory = WeatherViewModelFactory(repository)
         val weatherViewModel: WeatherViewModel by viewModels { viewModelFactory }
 
