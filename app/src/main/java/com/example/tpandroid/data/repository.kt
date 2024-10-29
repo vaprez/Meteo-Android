@@ -54,5 +54,30 @@ class WeatherRepository(
         }
     }
 
+    suspend fun addFavoriteCity (city : CityResult){
+        return try {
+            withContext(Dispatchers.IO){
+                database.weatherDao().insertCity(FavoriteCity.from(city))
+                println("city inserted into database")
+            }
+        }catch (e:Exception){
+            println("Error during city insertion")
+        }
+    }
 
+    suspend fun deleteFavoriteCity (city : CityResult){
+        return try {
+            withContext(Dispatchers.IO){
+                database.weatherDao().removeFavoriteCity(FavoriteCity.from(city))
+                println("city deleted into database")
+            }
+        }catch (e:Exception){
+            println("Error during city deletion")
+        }
+    }
+
+    suspend fun getFavoriteCity() : List<CityResult> {
+        val favoriteCities =  database.weatherDao().getFavoriteCities()
+        return favoriteCities.map { it.toCityResults() }
+    }
 }

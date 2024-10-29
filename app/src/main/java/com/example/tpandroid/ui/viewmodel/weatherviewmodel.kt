@@ -7,11 +7,16 @@ import com.example.tpandroid.data.model.HourlyData
 import com.example.tpandroid.data.model.WeatherInfo
 import com.example.tpandroid.data.model.WeatherResponse
 import com.example.tpandroid.data.network.CityResult
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
+
+    init {
+        loadFavorites()
+    }
 
     // État pour stocker les données météo
     private val _weatherState = MutableLiveData<WeatherResponse?>()
@@ -93,14 +98,40 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
     }
 
 
-    // Ajouter une ville aux favoris
+    // Ajouter une ville aux favoris et l'insérer dans la base de données
     fun addFavorite(city: CityResult) {
-        _favoriteCities.value = _favoriteCities.value + city
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.addFavoriteCity(city)
+                _favoriteCities.value = _favoriteCities.value + city
+            } catch (e: Exception) {
+                println("Erreur lors de l'ajout du favori : ${e.message}")
+            }
+        }
     }
 
-    // Supprimer une ville des favoris
+    // Supprimer une ville des favoris et de la base de données
     fun removeFavorite(city: CityResult) {
-        _favoriteCities.value = _favoriteCities.value.filter { it != city }
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.deleteFavoriteCity(city)
+                _favoriteCities.value = _favoriteCities.value.filter { it != city}
+            } catch (e: Exception) {
+                println("Erreur lors de la suppression du favori : ${e.message}")
+            }
+        }
+    }
+
+    // Charger les favoris depuis la base de données
+    private fun loadFavorites() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val favoritesFromDb = repository.getFavoriteCity()
+                _favoriteCities.value = favoritesFromDb
+            } catch (e: Exception) {
+                println("Erreur lors du chargement des favoris : ${e.message}")
+            }
+        }
     }
 
 

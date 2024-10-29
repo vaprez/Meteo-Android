@@ -74,217 +74,224 @@ fun Localisation(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            // Display current weather if available
-            weatherResponse?.let { weather ->
-                println("WeatherResponse: $weatherResponse")
-                println("test:${weather.hourly.weather_code}")
+            if(weatherResponse == null){
+                errorMessage = "Please check your connection"
+                titleMessage = "Network"
+                showErrorDialog = true
+            }else{
+                // Display current weather if available
+                weatherResponse?.let { weather ->
+                    println("WeatherResponse: $weatherResponse")
+                    println("test:${weather.hourly.weather_code}")
 
-                if (weather.hourly.temperature_2m.isNotEmpty() &&
-                    weather.hourly.wind_speed_10m.isNotEmpty() &&
-                    weather.hourly.weather_code.isNotEmpty() &&
-                    weather.hourly.time.isNotEmpty()
+                    if (weather.hourly.temperature_2m.isNotEmpty() &&
+                        weather.hourly.wind_speed_10m.isNotEmpty() &&
+                        weather.hourly.weather_code.isNotEmpty() &&
+                        weather.hourly.time.isNotEmpty()
 
-                ) {
-
-                    // Get current hour
-                    val currentHour = LocalDateTime.now().hour
-                    // Limit to the next 20 hours from the current hour
-                    val next20Hours = weather.hourly.temperature_2m.drop(currentHour).take(20)
-                    val windSpeedsNext20Hours = weather.hourly.wind_speed_10m.drop(currentHour).take(20)
-                    val timeNext20Hours = weather.hourly.time.drop(currentHour).take(20)
-                    val weatherCodesNext20Hours = weather.hourly.weather_code.drop(currentHour).take(20)
-                    val zoneParis = ZoneId.of("Europe/Paris")
-                    val formatter = DateTimeFormatter.ofPattern("HH:mm")
-                    val currentTemperature = next20Hours[0]
-                    val currentTime = (ZonedDateTime.now(zoneParis)).format(formatter)
-                    val (minTemperature, maxTemperature) = getTemperatureForToday(weather)
-                    val currentweatherDescription = viewModel.getWeatherDescription(weatherCodesNext20Hours[0])
-
-                    val formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-
-
-                    // Afficher la boîte de dialogue d'erreur si nécessaire
-                    if (showErrorDialog) {
-                        androidx.compose.material.AlertDialog(
-                            onDismissRequest = { showErrorDialog = false },
-                            title = { androidx.compose.material.Text(titleMessage,fontSize = 20.sp) },
-                            text = { androidx.compose.material.Text(errorMessage,fontSize = 18.sp) },
-                            confirmButton = {
-                                androidx.compose.material.TextButton(onClick = {
-                                    showErrorDialog = false
-                                }) {
-                                    androidx.compose.material.Text("OK")
-                                }
-                            }
-                        )
-                    }
-
-                    Text(
-                        text = "Méteo du ${LocalDate.now().format(formatDate)}",
-                        textAlign = TextAlign.Center,
-                        fontSize = 27.sp,
-                        fontWeight = FontWeight.Light
-                    )
-
-                    // Main card with current time, temperature, and wind speed
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        shape = MaterialTheme.shapes.medium,
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
                     ) {
-                        Box(
-                            contentAlignment = Alignment.TopEnd
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .fillMaxWidth(),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = "$currentTime",
-                                    fontSize = 25.sp,
-                                    fontWeight = FontWeight.Light,
-                                    textAlign = TextAlign.Left,
-                                    modifier = Modifier.align(Alignment.Start)
-                                )
 
-                                Text(
-                                    text = "${currentTemperature}°C",
-                                    fontSize = 40.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Center
-                                )
+                        // Get current hour
+                        val currentHour = LocalDateTime.now().hour
+                        // Limit to the next 20 hours from the current hour
+                        val next20Hours = weather.hourly.temperature_2m.drop(currentHour).take(20)
+                        val windSpeedsNext20Hours = weather.hourly.wind_speed_10m.drop(currentHour).take(20)
+                        val timeNext20Hours = weather.hourly.time.drop(currentHour).take(20)
+                        val weatherCodesNext20Hours = weather.hourly.weather_code.drop(currentHour).take(20)
+                        val zoneParis = ZoneId.of("Europe/Paris")
+                        val formatter = DateTimeFormatter.ofPattern("HH:mm")
+                        val currentTemperature = next20Hours[0]
+                        val currentTime = (ZonedDateTime.now(zoneParis)).format(formatter)
+                        val (minTemperature, maxTemperature) = getTemperatureForToday(weather)
+                        val currentweatherDescription = viewModel.getWeatherDescription(weatherCodesNext20Hours[0])
 
-                                Image(
-                                    painter = painterResource(id = currentweatherDescription.imageRes),
-                                    contentDescription = currentweatherDescription.description,
-                                    modifier = Modifier.size(64.dp)
-                                )
+                        val formatDate = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
-                                // Display weather condition
-                                Text(
-                                    text = currentweatherDescription.description,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Light,
-                                    textAlign = TextAlign.Start
-                                )
 
-                                Spacer(modifier = Modifier.height(8.dp))
-
-                                Text(
-                                    text = "Wind Speed: ${windSpeedsNext20Hours[0]} m/s",
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Light
-                                )
-
-                                Text(
-                                    text = "Min: ${minTemperature}°C | Max: ${maxTemperature}°C",
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Light,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
+                        // Afficher la boîte de dialogue d'erreur si nécessaire
+                        if (showErrorDialog) {
+                            androidx.compose.material.AlertDialog(
+                                onDismissRequest = { showErrorDialog = false },
+                                title = { androidx.compose.material.Text(titleMessage,fontSize = 20.sp) },
+                                text = { androidx.compose.material.Text(errorMessage,fontSize = 18.sp) },
+                                confirmButton = {
+                                    androidx.compose.material.TextButton(onClick = {
+                                        showErrorDialog = false
+                                    }) {
+                                        androidx.compose.material.Text("OK")
+                                    }
+                                }
+                            )
                         }
-                    }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = "Méteo du ${LocalDate.now().format(formatDate)}",
+                            textAlign = TextAlign.Center,
+                            fontSize = 27.sp,
+                            fontWeight = FontWeight.Light
+                        )
 
-                    // HorizontalPager for the next 20 hours of forecast
-                    HorizontalPager(
-                        count = next20Hours.size,
-                        state = pagerState,
-                        modifier = Modifier.fillMaxWidth()
-                    ) { page ->
-                        // Each card for hourly forecast
+                        // Main card with current time, temperature, and wind speed
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp),
                             shape = MaterialTheme.shapes.medium,
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                        ) {
+                            Box(
+                                contentAlignment = Alignment.TopEnd
                             ) {
-                            Column(
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .fillMaxWidth(),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                val hourString = timeNext20Hours[page].let {
-                                    LocalDateTime.parse(it.toString())
-                                        .atZone(ZoneId.of("UTC"))
-                                        .withZoneSameInstant(zoneParis) // Convert to Paris time
+                                Column(
+                                    modifier = Modifier
+                                        .padding(16.dp)
+                                        .fillMaxWidth(),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(
+                                        text = "$currentTime",
+                                        fontSize = 25.sp,
+                                        fontWeight = FontWeight.Light,
+                                        textAlign = TextAlign.Left,
+                                        modifier = Modifier.align(Alignment.Start)
+                                    )
+
+                                    Text(
+                                        text = "${currentTemperature}°C",
+                                        fontSize = 40.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Center
+                                    )
+
+                                    Image(
+                                        painter = painterResource(id = currentweatherDescription.imageRes),
+                                        contentDescription = currentweatherDescription.description,
+                                        modifier = Modifier.size(64.dp)
+                                    )
+
+                                    // Display weather condition
+                                    Text(
+                                        text = currentweatherDescription.description,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Light,
+                                        textAlign = TextAlign.Start
+                                    )
+
+                                    Spacer(modifier = Modifier.height(8.dp))
+
+                                    Text(
+                                        text = "Wind Speed: ${windSpeedsNext20Hours[0]} m/s",
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Light
+                                    )
+
+                                    Text(
+                                        text = "Min: ${minTemperature}°C | Max: ${maxTemperature}°C",
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Light,
+                                        textAlign = TextAlign.Center
+                                    )
                                 }
-
-                                val displayTime = if (currentHour + page < 24) {
-                                    hourString.format(formatter)
-                                } else {
-                                    hourString.minusHours(24).format(formatter)
-                                }
-
-                                // Display time for each forecast hour
-                                Text(
-                                    text = displayTime,
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Light,
-                                    textAlign = TextAlign.Left,
-                                    modifier = Modifier.align(Alignment.Start) // Placer l'heure dans le coin gauche
-                                )
-
-                                // Get weather description based on weather code
-                                val weatherDescription = viewModel.getWeatherDescription(weatherCodesNext20Hours[page])
-
-                                Image(
-                                    painter = painterResource(id = weatherDescription.imageRes),
-                                    contentDescription = weatherDescription.description,
-                                    modifier = Modifier.size(64.dp)
-                                )
-
-                                // Display temperature for each hour
-                                Text(
-                                    text = "${next20Hours[page]}°C",
-                                    fontSize = 40.sp,
-                                    fontWeight = FontWeight.Medium,
-                                    textAlign = TextAlign.Center
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-
-                                // Display wind speed
-                                Text(
-                                    text = "Wind Speed: ${windSpeedsNext20Hours[page]} m/s",
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Light
-                                )
                             }
                         }
-                    }
 
-                    // Horizontal pager indicator
-                    HorizontalPagerIndicator(
-                        pagerState = pagerState,
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(16.dp),
-                        activeColor = MaterialTheme.colorScheme.primary
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // HorizontalPager for the next 20 hours of forecast
+                        HorizontalPager(
+                            count = next20Hours.size,
+                            state = pagerState,
+                            modifier = Modifier.fillMaxWidth()
+                        ) { page ->
+                            // Each card for hourly forecast
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                shape = MaterialTheme.shapes.medium,
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+
+                                ) {
+                                Column(
+                                    modifier = Modifier
+                                        .padding(16.dp)
+                                        .fillMaxWidth(),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    val hourString = timeNext20Hours[page].let {
+                                        LocalDateTime.parse(it.toString())
+                                            .atZone(ZoneId.of("UTC"))
+                                            .withZoneSameInstant(zoneParis) // Convert to Paris time
+                                    }
+
+                                    val displayTime = if (currentHour + page < 24) {
+                                        hourString.format(formatter)
+                                    } else {
+                                        hourString.minusHours(24).format(formatter)
+                                    }
+
+                                    // Display time for each forecast hour
+                                    Text(
+                                        text = displayTime,
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Light,
+                                        textAlign = TextAlign.Left,
+                                        modifier = Modifier.align(Alignment.Start) // Placer l'heure dans le coin gauche
+                                    )
+
+                                    // Get weather description based on weather code
+                                    val weatherDescription = viewModel.getWeatherDescription(weatherCodesNext20Hours[page])
+
+                                    Image(
+                                        painter = painterResource(id = weatherDescription.imageRes),
+                                        contentDescription = weatherDescription.description,
+                                        modifier = Modifier.size(64.dp)
+                                    )
+
+                                    // Display temperature for each hour
+                                    Text(
+                                        text = "${next20Hours[page]}°C",
+                                        fontSize = 40.sp,
+                                        fontWeight = FontWeight.Medium,
+                                        textAlign = TextAlign.Center
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+
+                                    // Display wind speed
+                                    Text(
+                                        text = "Wind Speed: ${windSpeedsNext20Hours[page]} m/s",
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Light
+                                    )
+                                }
+                            }
+                        }
+
+                        // Horizontal pager indicator
+                        HorizontalPagerIndicator(
+                            pagerState = pagerState,
+                            modifier = Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(16.dp),
+                            activeColor = MaterialTheme.colorScheme.primary
+                        )
+                    } else {
+                        // Handle empty data case
+                        titleMessage = "Erreur"
+                        errorMessage = "Weather data is not available."
+                        showErrorDialog = true
+                    }
+                } ?: run {
+                    // En cours de chargement
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(50.dp) // Taille de la barre de progression
                     )
-                } else {
-                    // Handle empty data case
-                    titleMessage = "Erreur"
-                    errorMessage = "Weather data is not available."
-                    showErrorDialog = true
+                    Spacer(modifier = Modifier.height(16.dp)) // Espacement entre la barre de progression et le texte
+                    Text("Chargement des données météo...", fontSize = 18.sp) // Texte d'indication
+                    println("ok:${weatherResponse}")
                 }
-            } ?: run {
-                // En cours de chargement
-                CircularProgressIndicator(
-                    modifier = Modifier.size(50.dp) // Taille de la barre de progression
-                )
-                Spacer(modifier = Modifier.height(16.dp)) // Espacement entre la barre de progression et le texte
-                Text("Chargement des données météo...", fontSize = 18.sp) // Texte d'indication
-                println("ok:${weatherResponse}")
             }
+
         }
 
     }
